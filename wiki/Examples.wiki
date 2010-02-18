@@ -1,5 +1,5 @@
 #summary YAD usage examples
-#labels Featured
+#labels Featured,Phase-Implementation
 
 = Introduction =
 
