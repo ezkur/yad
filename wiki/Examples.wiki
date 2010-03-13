@@ -71,7 +71,7 @@ touch $HISTFILE
 # create and run dialog
 TITLE="Run command"
 TEXT="\nEnter command to execute:\n"
-CMD='yad --width=500 --center --window-icon="gtk-execute" --name="$(basename $0)" --title="$TITLE" --text="$TEXT" --image="gtk-execute" --entry --editable'
+CMD='yad --width=500 --center --window-icon="gtk-execute" --name="${$0##*/}" --title="$TITLE" --text="$TEXT" --image="gtk-execute" --entry --editable'
 ARGS=$(perl -pe 's/(^.*$)/"\1"/;s/\n/ /' $HISTFILE)
 rcmd=$(eval $CMD $ARGS)
 
