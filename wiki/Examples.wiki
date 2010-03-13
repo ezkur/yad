@@ -35,7 +35,7 @@ fi
 case $action in
     Power*) cmd="sudo /sbin/poweroff" ;;
     Reboot*) cmd="sudo /sbin/reboot" ;;
-    Suspend*) cmd="echo disk > /sys/power/state" ;;
+    Suspend*) cmd="sudo /bin/sh -c 'echo disk > /sys/power/state'" ;;
     Logout*) 
 	case $(wmctrl -m | grep Name)
 	    *Openbox) cmd="openbox --exit" ;;
