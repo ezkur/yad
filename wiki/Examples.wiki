@@ -117,7 +117,9 @@ for f in $config_dir/autostart/*.desktop; do
     grep -m 1 -e '^[[:blank:]]*Exec' $f | cut -d = -f 2
     grep -m 1 -e '^[[:blank:]]*Name' $f | cut -d = -f 2
     grep -m 1 -e '^[[:blank:]]*Comment' $f | cut -d = -f 2
-done | yad --width=500 --height=300 --title="Autostart editor" --image="gtk-execute" --text="Add/remove autostart items" --list --editable --print-all --multiple  --column="Command" --column="Name" --column="Description" > $results
+done | yad --width=500 --height=300 --title="Autostart editor" --image="gtk-execute" \
+           --text="Add/remove autostart items" --list --editable --print-all \
+           --multiple --column="Command" --column="Name" --column="Description" > $results
 
 if [[ $? -eq 0 ]]; then
     rm -f $config_dir/autostart/*.desktop
