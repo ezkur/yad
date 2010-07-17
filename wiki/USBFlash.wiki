@@ -1,5 +1,5 @@
+#summary Simple solution for automount removable usb media
 #labels Phase-Implementation,Phase-Design
-#Simple solution for automount removable usb media
 
 = Introduction =
 
