@@ -45,7 +45,7 @@ LABEL="auto_mount_end"
 *notification script*
 
 {{{
-! /bin/sh
+#! /bin/sh
 # -*- mode: sh -*-
 #
 # Manage removable media
