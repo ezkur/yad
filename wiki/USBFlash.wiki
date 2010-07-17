@@ -65,10 +65,10 @@ function on_unmount () {
     ret=$?
     if [[ $ret -eq 0 ]]; then
 	notify-send -u normal -i drive-removable-media -t 900 \
-	    "${1##*/}" $"${1##*/} unmounted successfully"
+	    "${1##*/}" "${1##*/} unmounted successfully"
     else
 	notify-send -u critical -i drive-removable-media -t 1200 \
-	    "${1##*/}" $"Unmount ${1##*/} failed (error code $ret)!!!"
+	    "${1##*/}" "Unmount ${1##*/} failed (error code $ret)!!!"
     fi
 }
 
