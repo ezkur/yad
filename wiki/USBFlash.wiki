@@ -37,9 +37,12 @@ ACTION=="add", ENV{dir_name}!="?*", ENV{dir_name}="usbhd-%k"
 
 # Main action
 ACTION=="add", ENV{dir_name}=="?*", RUN+="/bin/mkdir -p '/mnt/usb/%E{dir_name}'", RUN+="/bin/mount -o %E{mount_options} /dev/%k '/mnt/usb/%E{dir_name}'"
-ACTION=="remove", ENV{dir_name}=="?*", RUN+="/bin/umount -l '/mnt/usb/%E{dir_name}'", RUN+="/bin/rmdir '/mnt/usb/%E{dir_name}'", ENV{dir_label}=""
+ACTION=="remove", ENV{dir_name}=="?*", RUN+="/bin/umount -l '/mnt/usb/%E{dir_name}'", RUN+="/bin/rmdir '/mnt/usb/%E{dir_name}'"
 
 LABEL="auto_mount_end"
+
+# dir_label must be cleared
+ENV{dir_label}=""
 }}}
 
 *notification script*
