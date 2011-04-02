@@ -41,8 +41,8 @@ ACTION=="remove", ENV{dir_name}=="?*", RUN+="/bin/umount -l '/mnt/usb/%E{dir_nam
 
 LABEL="auto_mount_end"
 
-# dir_label must be cleared
-ENV{dir_label}=""
+# label must be cleared
+ENV{ID_FS_LABEL}=""
 }}}
 
 *notification script*
