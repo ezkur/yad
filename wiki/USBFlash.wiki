@@ -94,7 +94,7 @@ exec 3<> $PIPE
 export -f on_unmount
 trap on_exit SIGTERM SIGINT
 
-yad --notification --listen \
+yad --notification --kill-parent --listen \
     --image=drive-removable-media --text="Removable media" \
     --command="xdg-open $BASEDIR" <&3 &
 
