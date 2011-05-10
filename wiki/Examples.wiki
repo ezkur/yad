@@ -37,9 +37,10 @@ case $action in
     Reboot*) cmd="sudo /sbin/reboot" ;;
     Suspend*) cmd="sudo /bin/sh -c 'echo disk > /sys/power/state'" ;;
     Logout*) 
-	case $(wmctrl -m | grep Name)
+	case $(wmctrl -m | grep Name) in
 	    *Openbox) cmd="openbox --exit" ;;
 	    *FVWM) cmd="FvwmCommand Quit" ;;
+            *Metacity) cmd="gnome-save-session --kill" ;; 
 	    *) exit 1 ;;
 	esac
 	;;
