@@ -65,7 +65,7 @@ done
 # select album and file
 eval $($YAD --title="Upload to picasa" --text="Upload to Picasa" \
     --form --field="Album::CB" --field="Title:" --field="File::FL" \
-    "$alb" "$1" | awk -F'|' '{printf "ALBUM=\"%s\"\nTITLE=\"%s\"\nFILENAME=\"%s\"\n", $1, $2, $3}')
+    "$alb" "" "$1" | awk -F'|' '{printf "ALBUM=\"%s\"\nTITLE=\"%s\"\nFILENAME=\"%s\"\n", $1, $2, $3}')
 [[ -z $ALBUM || -z $FILENAME ]] && exit 1
 
 for ((i=1; i<${#ALBUMS[@]}; i+=2)); do
