@@ -1,6 +1,5 @@
-#summary YAD usage examples
+#summary Upload images to Picasaweb
 #labels Featured,Phase-Implementation
-
 = Introduction =
 
 Script for upload images to Picasaweb
