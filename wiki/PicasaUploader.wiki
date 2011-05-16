@@ -15,6 +15,11 @@ Additional software:
 AUTHFILE=${XDG_CACHE_HOME:-$HOME/.cache}/google.auth
 YAD="yad --window-icon=web-browser --name=${0##*/}"
 
+# remove temporary files
+function atexit () {
+    rm -f /tmp/res /tmp/google.xsl
+}
+
 # create stylesheet
 cat > /tmp/google.xsl <<EOF
 <?xml version='1.0' encoding='utf-8'?>
@@ -31,6 +36,9 @@ cat > /tmp/google.xsl <<EOF
 </xsl:template>
 </xsl:stylesheet>
 EOF
+
+# cleanup on exit
+trap atexit EXIT
 
 # login
 if [[ -e $AUTHFILE ]]; then
@@ -84,9 +92,6 @@ curl --request POST --data-binary "@$FILENAME" --header "Slug: $TITLE" \
 if [[ ${PIPESTATUS[0]} -ne 0 ]]; then
     $YAD --title="Upload error" --image=dialog-error --button=gtk-close --text="Upload failed: $(< /tmp/res)"
 fi
-
-# cleanup
-rm -f /tmp/res /tmp/google.xsl
 
 exit 0
 }}}
