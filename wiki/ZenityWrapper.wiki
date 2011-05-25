@@ -7,6 +7,8 @@ A little shell wrapper for use yad with zenity-based scripts
 
 Just place following code to your startup files (~/.xprofile, ./bash_profile or same)
 
+*This is just proof of concept, not a fully-worked solution!*
+
 = Code =
 
 {{{
