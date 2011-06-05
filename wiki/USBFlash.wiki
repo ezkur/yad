@@ -92,7 +92,7 @@ mkfifo $PIPE
 exec 3<> $PIPE
 
 export -f on_unmount
-trap on_exit SIGTERM SIGINT
+trap on_exit EXIT
 
 yad --notification --kill-parent --listen \
     --image=drive-removable-media --text="Removable media" \
