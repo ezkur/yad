@@ -99,4 +99,4 @@ yad --notification                  \
 }}}
 
 == Bigger Example ==
-For a bigger example of the notification API, see the USBFlash wiki
+For a bigger example of the notification API, see the [http://code.google.com/p/yad/wiki/USBFlash USBFlash wiki]
