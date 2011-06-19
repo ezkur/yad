@@ -45,7 +45,7 @@ To create Yad with a specific tray icon use:
 }}}
 
 Unlike Zenity, the icon naming convention does not look for stock icon names but the names used by the current gtk+ icon theme. To see a list of the icon names currently available in your icon
-theme, use yad-icon-browser (if builede) or see [http://live.gnome.org/GnomeArt/Tutorials/IconThemes Icon Themes].
+theme, use yad-icon-browser (if built) or see [http://live.gnome.org/GnomeArt/Tutorials/IconThemes Icon Themes].
 
 A (mildly) more complex example combining a few more option flags is:
 {{{
