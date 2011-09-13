@@ -19,7 +19,7 @@ PARSER='{font=""; color="#FFFFFF"}; \
 OFS="\n" {print $1 " " $2, $3, $4, substr($5,0,index($5,":")-1), \
 substr($0,index($0,$6)), font, color; fflush()}'
 
-exec tail -f $LOGFILE | awk "$PARSER" | \
+tail -f $LOGFILE | awk "$PARSER" | \
 yad --title="Log viewer" --window-icon=logviewer \
     --button=gtk-close --geometry 600x350 \
     --list --text="Content of $LOGFILE" \
