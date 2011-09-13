@@ -3,7 +3,7 @@
 = Introduction =
 
 This script demonstrates new features of list dialog.
-Script displays content of specified log file and mark some special strings: with word "kernel" by setting italic font, with word "error" by light yellow background and with work "warn" by pink background
+Script displays content of specified log file and mark some special strings: with word "kernel" by setting italic font, with word "error" by light yellow background and with word "warn" by pink background
 
 = Code =
 
