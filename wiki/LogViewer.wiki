@@ -27,5 +27,5 @@ yad --title="Log viewer" --window-icon=logviewer \
     --column Tag --column Message:TIP \
     --column @font@ --column @back@
 
-exit 0
+exit $?
 }}}
