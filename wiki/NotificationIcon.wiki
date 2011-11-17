@@ -68,7 +68,7 @@ It's great to be able to control the notification settings from stdin but more u
 
 An example shell script:
 {{{
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # create a FIFO file, used to manage the I/O redirection from shell
 PIPE=$(mktemp -u --tmpdir ${0##*/}.XXXXXXXX)
@@ -95,7 +95,7 @@ yad --notification                  \
     --listen                        \
     --image="gtk-help"              \
     --text="Notification tooltip"   \
-    --command="sh -c on_click" <&3 &
+    --command="bash -c on_click" <&3
 }}}
 
 == Bigger Example ==
