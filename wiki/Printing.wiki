@@ -1,0 +1,22 @@
+#summary Printing with YAD
+#labels System,Phase-Support
+
+There is a little bug in GTK+ when printing to a file. The patch below correct this issue
+
+{{{
+--- gtk+-2.24.8/gtk/gtkprintoperation-unix.c.orig       2011-11-10 19:38:03.000000000 +0200
++++ gtk+-2.24.8/gtk/gtkprintoperation-unix.c    2011-11-21 17:02:44.404999966 +0200
+@@ -1098,8 +1098,8 @@
+     return;
+
+   /* FIXME this skips "Print to PDF" - is this intentional ? */
+-  if (gtk_printer_is_virtual (printer))
+-    return;
++  //if (gtk_printer_is_virtual (printer))
++  //  return;
+
+   if (finder->printer_name != NULL &&
+       strcmp (gtk_printer_get_name (printer), finder->printer_name) == 0)
+}}}
+
+i've checked it on gtk+-2.24.8, but it must works on other versions of gtk2 too
