@@ -122,7 +122,7 @@ done | yad --width=500 --height=300 --title="Autostart editor" --image="gtk-exec
            --text="Add/remove autostart items" --list --editable --print-all \
            --multiple --column="Command" --column="Name" --column="Description" > $results
 
-if [[ $? -eq 0 ]]; then
+if [[ ${PIPESTATUS[1]} -eq 0 ]]; then
     rm -f $config_dir/autostart/*.desktop
     i=0
     cat $results | while read line; do
