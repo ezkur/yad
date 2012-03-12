@@ -6,7 +6,7 @@
 Graphical frontend for df(1) command. 
 This example demonstrate how to use multi-progress dialog
 
-Required yad version - 0.17.90 or latest
+Required yad version - 0.17.90 or later
 
 = Details =
 
