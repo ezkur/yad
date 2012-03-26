@@ -24,7 +24,7 @@ ACTION=="add", PROGRAM!="/sbin/blkid %N", GOTO="auto_mount_end"
 ACTION=="add", IMPORT{program}="/sbin/blkid -o udev -p -s TYPE -s LABEL %N"
 
 # Global mount options
-ACTION=="add", ENV{mount_options}="noatime,nodiratime,users,umask=0"
+ACTION=="add", ENV{mount_options}="relatime,users,umask=0"
 
 # Filesystem specific options
 ACTION=="add", ENV{ID_FS_TYPE}=="vfat", ENV{mount_options}="%E{mount_options},showexec"
