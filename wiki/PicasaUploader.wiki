@@ -81,7 +81,7 @@ for ((i=1; i<${#ALBUMS[@]}; i+=2)); do
 	break
     fi
 done
-TYPE=$(file -bi $FILENAME | sed "s/;.*$//")
+TYPE=$(file -b --mime-type $FILENAME)
 
 # upload file
 curl --request POST --data-binary "@$FILENAME" --header "Slug: $TITLE" \
