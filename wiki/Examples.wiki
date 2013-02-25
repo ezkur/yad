@@ -72,9 +72,7 @@ touch $HISTFILE
 # create and run dialog
 TITLE="Run command"
 TEXT="\nEnter command to execute:\n"
-CMD='yad --width=500 --center --window-icon="gtk-execute" --name="${0##*/}" --title="$TITLE" --text="$TEXT" --image="gtk-execute" --entry --editable'
-ARGS=$(perl -pe 's/(^.*$)/"\1"/;s/\n/ /' $HISTFILE)
-rcmd=$(eval $CMD $ARGS)
+rcmd=$('yad --width=500 --center --window-icon="gtk-execute" --name="${0##*/}" --title="$TITLE" --text="$TEXT" --image="gtk-execute" --entry --editable --rest="$HISTFILE")
 
 [[ -z "$rcmd" ]] && exit 0
 
@@ -98,7 +96,7 @@ case $rcmd in
 esac
 
 # add command to history
-grep -q -F "$rcmd" $HISTFILE || echo $rcmd >> $HISTFILE
+grep -q -F "$rcmd" $HISTFILE || sed -i "1 i $rcmd" $HISTFILE
 
 exit 0
 }}}
