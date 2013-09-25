@@ -45,6 +45,7 @@ eval $(sed -r "s/[ \t]*=[ \t]*/=/" $rc_file | awk "$PARSER")
 
 # create list of gtk themes
 themelist=
+keythemelist="Default"
 for d in /usr/share/themes/*; do
     theme=${d##*/}
     if [[ -e $d/gtk-2.0/gtkrc ]]; then
@@ -52,32 +53,21 @@ for d in /usr/share/themes/*; do
         [[ $theme == $GTKTHEME ]] && theme="^$theme"
         themelist+="$theme"
     fi
-done
-
-# create list of gtk key themes
-keythemelist="Default"
-for d in /usr/share/themes/*; do
-    theme=${d##*/}
     if [[ -e $d/gtk-2.0-key/gtkrc ]]; then
         [[ $theme == $KEYTHEME ]] && theme="^$theme"
         keythemelist+="!$theme"
     fi
 done
 
-# create list of icon themes
+# create list of icon and cursor themes
 iconthemelist="Default"
+cursorthemelist="Default"
 for d in /usr/share/icons/*; do
     theme=${d##*/}
     if [[ -e $d/index.theme ]]; then
         [[ $theme == $ICONTHEME ]] && theme="^$theme"
         iconthemelist+="!$theme"
     fi
-done
-
-# create list of cursor themes
-cursorthemelist="Default"
-for d in /usr/share/icons/*; do
-    theme=${d##*/}
     if [[ -d $d/cursors ]]; then
         [[ $theme == $CURSORTHEME ]] && theme="^$theme"
         cursorthemelist+="!$theme"
