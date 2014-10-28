@@ -97,7 +97,7 @@ tbiconsizelist+="DND"!
 tbiconsizelist+="Dialog"
 
 # theme page
-/usr/desktop/bin/yad --plug=$KEY --tabnum=1 --form --separator='\n' --quoted-output \
+yad --plug=$KEY --tabnum=1 --form --separator='\n' --quoted-output \
     --field="GTK+ theme::cb" "$themelist" \
     --field="GTK+ key theme::cb" "$keythemelist" \
     --field="Icons theme::cb" "$iconthemelist" \
@@ -128,7 +128,7 @@ rgbalist+="VRGB"!
 rgbalist+="VBGR"
 
 # fonts page
-/usr/desktop/bin/yad --plug=$KEY --tabnum=2 --form --separator='\n' --quoted-output \
+yad --plug=$KEY --tabnum=2 --form --separator='\n' --quoted-output \
     --field="Font::fn" "$FONTDESCR" --field=":lbl" "" \
     --field="Use antialiasing:chk" "$ANTIALIASING" \
     --field="Use hinting:chk" "$HINTING" \
@@ -139,7 +139,7 @@ rgbalist+="VBGR"
 eval $(echo -e $COLORSCHEME | tr ';' '\n' | sed -r 's/:(.*)$/="\1"/')
 
 # colors page
-/usr/desktop/bin/yad --plug=$KEY --tabnum=3 --form --separator='\n' --quoted-output \
+yad --plug=$KEY --tabnum=3 --form --separator='\n' --quoted-output \
     --field="Foreground::clr" $fg_color \
     --field="Background::clr" $bg_color \
     --field="Text::clr" $text_color \
@@ -150,7 +150,7 @@ eval $(echo -e $COLORSCHEME | tr ';' '\n' | sed -r 's/:(.*)$/="\1"/')
     --field="Tooltip back::clr" $tooltip_bg_color  > $res3 &
 
 # run main dialog
-/usr/desktop/bin/yad --notebook --key=$KEY --tab="Theme" --tab="Fonts" --tab="Colors" \
+yad --notebook --key=$KEY --tab="Theme" --tab="Fonts" --tab="Colors" \
     --title="Interface settings" --image=gnome-settings-theme \
     --width=400 --image-on-top --text="Common interface settings"
 
