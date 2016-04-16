@@ -1,0 +1,20 @@
+# Notes #
+
+Graphical frontend for df(1) command.
+This example demonstrate how to use multi-progress dialog
+
+Required yad version - 0.17.90 or later
+
+# Details #
+
+```
+#! /bin/bash
+# -*- mode: sh -*-
+#
+# Graphicat frontend for df(1) command
+# Author: Victor Ananjevsky <ananasik@gmail.com>, 2012
+#
+
+eval exec yad --image=drive-harddisk --text="Disk\ usage" --buttons-layout=end --multi-progress \
+	$(df -h $1 | tail -n +2 | awk '{printf "--bar=\"<b>%s</b> (%s) [%s/%s]\" %s ", $6, $1, $3, $2, $5}')
+```

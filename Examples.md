@@ -1,0 +1,204 @@
+# Introduction #
+
+Here is set of examples demonstrate how to use yad in shell scripts.
+
+# Logout dialog #
+
+Show logout dialog.
+
+Additional software:
+  * wmctrl (http://tripie.sweb.cz/utils/wmctrl/)
+
+### code: ###
+```
+#! /bin/bash
+
+action=$(yad --width 300 --entry --title "System Logout" \
+    --image=gnome-shutdown \
+    --button="Switch User:2" \
+    --button="gtk-ok:0" --button="gtk-close:1" \
+    --text "Choose action:" \
+    --entry-text \
+    "Power Off" "Reboot" "Suspend" "Logout")
+ret=$?
+
+[[ $ret -eq 1 ]] && exit 0
+
+if [[ $ret -eq 2 ]]; then
+    gdmflexiserver --startnew &
+    exit 0
+fi
+
+case $action in
+    Power*) cmd="sudo /sbin/poweroff" ;;
+    Reboot*) cmd="sudo /sbin/reboot" ;;
+    Suspend*) cmd="sudo /bin/sh -c 'echo disk > /sys/power/state'" ;;
+    Logout*) 
+	case $(wmctrl -m | grep Name) in
+	    *Openbox) cmd="openbox --exit" ;;
+	    *FVWM) cmd="FvwmCommand Quit" ;;
+            *Metacity) cmd="gnome-save-session --kill" ;; 
+	    *) exit 1 ;;
+	esac
+	;;
+    *) exit 1 ;;	
+esac
+
+eval exec $cmd
+```
+
+# Run dialog #
+
+Run dialog with history, URI recognition and run-in-xterm functions
+
+Additional software:
+  * xterm
+  * perl
+
+### code: ###
+```
+#! /bin/bash
+
+XTERM="xterm"
+
+# create history file
+mkdir -p ${XDG_CACHE_HOME:-$HOME/.cache}/
+HISTFILE=${XDG_CACHE_HOME:-$HOME/.cache}/ix-run.history
+touch $HISTFILE
+
+# create and run dialog
+TITLE="Run command"
+TEXT="\nEnter command to execute:\n"
+rcmd=$('yad --width=500 --center --window-icon="gtk-execute" --name="${0##*/}" --title="$TITLE" --text="$TEXT" --image="gtk-execute" --entry --editable --rest="$HISTFILE")
+
+[[ -z "$rcmd" ]] && exit 0
+
+# run command
+case $rcmd in
+    http://*|https://*|ftp://*)
+	xdg-open $rcmd &
+	;;
+    mailto://*)
+	xdg-email $rcmd &
+	;;
+    man://*)
+	eval $XTERM -e "man ${rcmd#man://}" &
+	;;
+    telnet*|ssh*)
+	eval $XTERM -e "$rcmd" &
+	;;
+    *)
+	eval $rcmd &
+	;;
+esac
+
+# add command to history
+grep -q -F "$rcmd" $HISTFILE || sed -i "1 i $rcmd" $HISTFILE
+
+exit 0
+```
+
+# Autostart editor #
+
+Edit content of $HOME/.config/autostart.
+
+### code: ###
+```
+#! /bin/bash
+
+config_dir=${XDG_CONFIG_HOME:-$HOME/.config}
+results=$(mktemp --tmpdir autostart.XXXXXXXXXX)
+
+for f in $config_dir/autostart/*.desktop; do
+    grep -m 1 -e '^[[:blank:]]*Exec' $f | cut -d = -f 2
+    grep -m 1 -e '^[[:blank:]]*Name' $f | cut -d = -f 2
+    grep -m 1 -e '^[[:blank:]]*Comment' $f | cut -d = -f 2
+done | yad --width=500 --height=300 --title="Autostart editor" --image="gtk-execute" \
+           --text="Add/remove autostart items" --list --editable --print-all \
+           --multiple --column="Command" --column="Name" --column="Description" > $results
+
+if [[ ${PIPESTATUS[1]} -eq 0 ]]; then
+    rm -f $config_dir/autostart/*.desktop
+    i=0
+    cat $results | while read line; do
+    	eval $(echo $line | awk -F'|' '{printf "export NAME=\"%s\" COMMENT=\"%s\" COMMAND=\"%s\"", $2, $3, $1}')
+    	cat > $config_dir/autostart/$i$NAME.desktop << EOF
+[Desktop Entry]
+Encoding=UTF-8
+Name=$NAME
+Comment=$COMMENT
+Exec=$COMMAND
+StartupNotify=true
+Terminal=false
+EOF
+	$((i++))
+    done
+    unset NAME COMMENT COMMAND
+fi
+
+rm -f $results
+exit 0
+```
+
+# Graphical frontend for su(1) #
+
+Run program as a different user (root by default). Ask password if needed
+
+Additional software:
+  * empty (http://empty.sourceforge.net/)
+
+### code: ###
+```
+#! /bin/bash
+
+# some defaults
+user="root"
+suargs="-p"
+force="no"
+
+# parse commandline   
+if [[ $# -eq 0 ]]; then
+    echo "Usage: ${0##*/} [-f] [-u user] [--] "
+    exit 1
+fi
+
+OPTIND=1
+while getopts u: opt; do
+    case "$opt" in
+        f) force="yes" ;;
+        u) user="$OPTARG" ;;
+    esac
+done
+shift $((OPTIND - 1))
+
+cmd="$*"
+
+if [[ $force != "no" ]]; then
+    # check for sudo
+    sudo_check=$(sudo -H -S -- echo SUDO_OK 2>&1 &)
+    if [[ $sudo_check == "SUDO_OK" ]]; then
+        eval sudo $cmd
+        exit $?
+    fi
+fi
+
+# get password
+pass=$(yad --class="GSu" \
+    --title="Password" \
+    --text="Enter password for user <b>$user</b>:" \
+    --image="dialog-password" \
+    --entry --hide-text)
+[[ -z "$pass" ]] && exit 1
+
+# grant access to xserver for specified user
+xhost +${user}@ &> /dev/null
+
+# run command
+fifo_in="$(mktemp -u --tmpdir gsu.empty.in.XXXXXXXXX)"
+fifo_out="$(mktemp -u --tmpdir gsu.empty.out.XXXXXXXXX)"
+
+LC_MESSAGES=C empty -f -i $fifo_in -o $fifo_out su $suargs $user -c "$cmd"
+[[ $? -eq 0 ]] && empty -w -i $fifo_out -o $fifo_in "word:" "$pass\n"
+
+exit $?
+```
